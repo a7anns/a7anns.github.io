@@ -1,1 +1,386 @@
 
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+.page { padding: 2rem 0; }
+
+.hero { display: flex; align-items: center; gap: 2rem; padding: 2rem 1.5rem; background: var(--color-background-secondary); border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); margin-bottom: 1.5rem; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: -40px; right: -40px; width: 160px; height: 160px; border-radius: 50%; background: #E6F1FB; opacity: 0.5; }
+.hero::after { content: ''; position: absolute; bottom: -30px; right: 80px; width: 90px; height: 90px; border-radius: 50%; background: #EAF3DE; opacity: 0.4; }
+
+.avatar-wrap { position: relative; flex-shrink: 0; }
+.avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 2.5px solid #185FA5; display: block; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.avatar:hover { transform: scale(1.06); box-shadow: 0 0 0 5px #B5D4F4; }
+.online-dot { position: absolute; bottom: 4px; right: 4px; width: 14px; height: 14px; border-radius: 50%; background: #3B6D11; border: 2px solid var(--color-background-secondary); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(59,109,17,0.4); } 50% { box-shadow: 0 0 0 5px rgba(59,109,17,0); } }
+
+.hero-text h1 { font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 2px; }
+.hero-tagline { font-size: 13px; color: #185FA5; font-weight: 500; margin-bottom: 6px; }
+.hero-text p { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+.contact-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.contact-chip { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--color-text-secondary); background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); padding: 5px 11px; border-radius: 20px; text-decoration: none; cursor: pointer; transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s; }
+.contact-chip:hover { background: #E6F1FB; border-color: #B5D4F4; color: #185FA5; transform: translateY(-1px); }
+.contact-chip i { font-size: 13px; }
+
+.section-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-tertiary); margin-bottom: 10px; }
+
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+.stat-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 14px 12px; text-align: center; border: 0.5px solid var(--color-border-tertiary); transition: transform 0.2s, border-color 0.2s; cursor: default; }
+.stat-card:hover { transform: translateY(-3px); border-color: #B5D4F4; }
+.stat-num { font-size: 24px; font-weight: 500; color: #185FA5; }
+.stat-lbl { font-size: 11px; color: var(--color-text-tertiary); margin-top: 3px; line-height: 1.4; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+.card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem; }
+
+.exp-item { padding: 10px 0; border-bottom: 0.5px solid var(--color-border-tertiary); transition: background 0.2s; border-radius: 6px; padding-left: 6px; padding-right: 6px; cursor: default; }
+.exp-item:last-child { border-bottom: none; }
+.exp-item:hover { background: var(--color-background-secondary); }
+.exp-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.exp-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+.exp-co { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+.badge { font-size: 10px; padding: 2px 8px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+.badge-au { background: #E6F1FB; color: #0C447C; }
+.badge-in { background: #F1EFE8; color: #444441; }
+.badge-now { background: #EAF3DE; color: #3B6D11; animation: badgePulse 2.5s infinite; }
+@keyframes badgePulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+.year { font-size: 11px; color: var(--color-text-tertiary); }
+
+.skills-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+.skill-pill { font-size: 12px; color: var(--color-text-secondary); background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); padding: 5px 11px; border-radius: 20px; transition: transform 0.15s, background 0.2s, color 0.2s; cursor: default; }
+.skill-pill:hover { transform: translateY(-2px); background: var(--color-background-primary); border-color: var(--color-border-secondary); }
+.skill-pill.highlight { background: #E6F1FB; color: #185FA5; border-color: #B5D4F4; }
+.skill-pill.highlight:hover { background: #B5D4F4; }
+
+.cert-item { display: flex; align-items: center; gap: 10px; padding: 8px 6px; border-bottom: 0.5px solid var(--color-border-tertiary); border-radius: 6px; transition: background 0.2s; cursor: default; }
+.cert-item:last-child { border-bottom: none; }
+.cert-item:hover { background: var(--color-background-secondary); }
+.cert-icon { width: 32px; height: 32px; border-radius: var(--border-radius-md); background: var(--color-background-secondary); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.cert-icon i { font-size: 16px; color: #185FA5; }
+.cert-name { font-size: 12px; font-weight: 500; color: var(--color-text-primary); }
+.cert-org { font-size: 11px; color: var(--color-text-tertiary); }
+
+.timeline { position: relative; padding-left: 18px; }
+.timeline::before { content: ''; position: absolute; left: 4px; top: 6px; bottom: 6px; width: 1px; background: var(--color-border-secondary); }
+.tl-item { position: relative; margin-bottom: 14px; }
+.tl-item:last-child { margin-bottom: 0; }
+.tl-dot { position: absolute; left: -18px; top: 4px; width: 9px; height: 9px; border-radius: 50%; background: var(--color-background-primary); border: 1.5px solid var(--color-border-primary); transition: transform 0.2s; }
+.tl-item:hover .tl-dot { transform: scale(1.4); }
+.tl-dot.active { background: #185FA5; border-color: #185FA5; }
+.tl-year { font-size: 10px; color: var(--color-text-tertiary); margin-bottom: 2px; }
+.tl-role { font-size: 12px; font-weight: 500; color: var(--color-text-primary); }
+.tl-place { font-size: 11px; color: var(--color-text-secondary); }
+
+.bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.bar-label { font-size: 12px; color: var(--color-text-secondary); width: 90px; flex-shrink: 0; text-align: right; }
+.bar-track { flex: 1; height: 7px; background: var(--color-background-secondary); border-radius: 4px; overflow: hidden; cursor: pointer; }
+.bar-fill { height: 100%; border-radius: 4px; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); }
+.bar-track:hover .bar-fill { filter: brightness(1.1); }
+
+.full-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem; margin-bottom: 1rem; }
+
+.ref-chip { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: var(--border-radius-md); transition: background 0.2s; }
+.ref-chip:hover { background: var(--color-background-secondary); }
+.ref-avatar { width: 40px; height: 40px; border-radius: 50%; background: #E6F1FB; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: #185FA5; flex-shrink: 0; }
+.ref-link { font-size: 12px; color: #185FA5; text-decoration: none; display: flex; align-items: center; gap: 4px; margin-top: 2px; }
+.ref-link:hover { text-decoration: underline; }
+
+.fallback-avatar { width: 90px; height: 90px; border-radius: 50%; background: #E6F1FB; display: none; align-items: center; justify-content: center; font-size: 22px; font-weight: 500; color: #185FA5; flex-shrink: 0; border: 2.5px solid #185FA5; }
+
+.cta-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; background: #185FA5; color: #fff; border: none; padding: 10px 22px; border-radius: 20px; cursor: pointer; transition: background 0.2s, transform 0.15s; font-family: var(--font-sans); }
+.cta-btn:hover { background: #0C447C; transform: translateY(-1px); }
+.cta-btn:active { transform: scale(0.97); }
+
+.tooltip-wrap { position: relative; display: inline-block; }
+.tooltip { position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%); background: var(--color-text-primary); color: var(--color-background-primary); font-size: 11px; padding: 4px 8px; border-radius: 6px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 10; }
+.tooltip-wrap:hover .tooltip { opacity: 1; }
+
+.fade-in { opacity: 0; animation: fadeUp 0.55s ease forwards; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in:nth-child(1) { animation-delay: 0.05s; }
+.fade-in:nth-child(2) { animation-delay: 0.18s; }
+.fade-in:nth-child(3) { animation-delay: 0.3s; }
+.fade-in:nth-child(4) { animation-delay: 0.42s; }
+.fade-in:nth-child(5) { animation-delay: 0.54s; }
+.fade-in:nth-child(6) { animation-delay: 0.66s; }
+.fade-in:nth-child(7) { animation-delay: 0.78s; }
+</style>
+
+<div class="page">
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Ann Mary Poulose — Accounting professional portfolio</h2>
+
+<!-- HERO -->
+<div class="hero fade-in">
+  <div class="avatar-wrap">
+    <img id="profile-pic" src="https://i.postimg.cc/sXtmLSYP/dp-linkedin.jpg" class="avatar" alt="Ann Mary Poulose" onerror="this.style.display='none'; document.getElementById('fallback-av').style.display='flex';">
+    <div id="fallback-av" class="fallback-avatar">AM</div>
+    <div class="online-dot" title="Open to opportunities"></div>
+  </div>
+  <div class="hero-text">
+    <h1>Ann Mary Poulose</h1>
+    <div class="hero-tagline">Assistant Accountant · MYOB Certified · UOW Graduate</div>
+    <p>Accounting graduate from the University of Wollongong with hands-on Australian experience in bookkeeping, payroll, reconciliation, and financial administration. MYOB Certified · Xero · Advanced Excel.</p>
+    <div class="contact-row">
+      <span class="contact-chip tooltip-wrap">
+        <i class="ti ti-map-pin" aria-hidden="true"></i> Figtree, NSW 2525
+        <span class="tooltip">Wollongong area, NSW</span>
+      </span>
+      <a href="tel:+61402608215" class="contact-chip">
+        <i class="ti ti-phone" aria-hidden="true"></i> +61 402 608 215
+      </a>
+      <a href="mailto:a7anns@gmail.com" class="contact-chip">
+        <i class="ti ti-mail" aria-hidden="true"></i> a7anns@gmail.com
+      </a>
+      <a href="https://linkedin.com/in/ann-mary-poulose" class="contact-chip" target="_blank" rel="noopener">
+        <i class="ti ti-brand-linkedin" aria-hidden="true"></i> LinkedIn
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-grid fade-in">
+  <div class="stat-card tooltip-wrap">
+    <div class="stat-num" id="c-exp">0</div>
+    <div class="stat-lbl">Years experience</div>
+    <span class="tooltip">Across AU & India</span>
+  </div>
+  <div class="stat-card tooltip-wrap">
+    <div class="stat-num" id="c-cert">0</div>
+    <div class="stat-lbl">Tax qualifications</div>
+    <span class="tooltip">H&R Block, UOW Tax Clinic, MYOB</span>
+  </div>
+  <div class="stat-card tooltip-wrap">
+    <div class="stat-num" id="c-gpa">0</div>
+    <div class="stat-lbl">B.Com CGPA / 10</div>
+    <span class="tooltip">Mahatma Gandhi University — A grade</span>
+  </div>
+  <div class="stat-card tooltip-wrap">
+    <div class="stat-num" id="c-lang">0</div>
+    <div class="stat-lbl">Languages spoken</div>
+    <span class="tooltip">English · Hindi · Malayalam</span>
+  </div>
+</div>
+
+<!-- EXPERIENCE -->
+<div class="two-col fade-in">
+  <div class="card">
+    <p class="section-label">Australian experience</p>
+    <div class="exp-item">
+      <div class="exp-top">
+        <div>
+          <div class="exp-title">Assistant Accountant</div>
+          <div class="exp-co">Figtree Newsmart, NSW</div>
+        </div>
+        <span class="badge badge-now">Current</span>
+      </div>
+      <div class="year" style="margin-top:4px;">2025 – Present</div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-top">
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="section-label">International experience (India)</p>
+    <div class="exp-item">
+      <div class="exp-top">
+        <div>
+          <div class="exp-title">Accountant</div>
+          <div class="exp-co">Royal Sani-Tech</div>
+        </div>
+        <span class="badge badge-in">IN</span>
+      </div>
+      <div class="year" style="margin-top:4px;">Dec 2022 – Jul 2023</div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-top">
+        <div>
+          <div class="exp-title">HR, Admin & Accounts Executive</div>
+          <div class="exp-co">Onflap Technologies Pvt. Ltd.</div>
+        </div>
+        <span class="badge badge-in">IN</span>
+      </div>
+      <div class="year" style="margin-top:4px;">Sep 2021 – Aug 2022</div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-top">
+        <div>
+          <div class="exp-title">Accounts Associate (Trainee)</div>
+          <div class="exp-co">CA Alwin Varghese & Co.</div>
+        </div>
+        <span class="badge badge-in">IN</span>
+      </div>
+      <div class="year" style="margin-top:4px;">Aug 2020 – Mar 2021</div>
+    </div>
+  </div>
+</div>
+
+<!-- TOOLS + CERTS -->
+<div class="two-col fade-in">
+  <div class="card">
+    <p class="section-label">Software & tools</p>
+    <div id="bars" style="margin-top: 10px;"></div>
+  </div>
+
+  <div class="card">
+    <p class="section-label">Certifications & development</p>
+    <div class="cert-item">
+      <div class="cert-icon"><i class="ti ti-certificate" aria-hidden="true"></i></div>
+      <div>
+        <div class="cert-name">MYOB Certified</div>
+        <div class="cert-org">MYOB Australia · 2025</div>
+      </div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-icon"><i class="ti ti-building-bank" aria-hidden="true"></i></div>
+      <div>
+        <div class="cert-name">Income Tax Course</div>
+        <div class="cert-org">H&R Block Australia · 2025</div>
+      </div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-icon"><i class="ti ti-scale" aria-hidden="true"></i></div>
+      <div>
+        <div class="cert-name">Tax Clinic — Registered Tax Agent</div>
+        <div class="cert-org">University of Wollongong · 2025</div>
+      </div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-icon"><i class="ti ti-chart-dots" aria-hidden="true"></i></div>
+      <div>
+        <div class="cert-name">Data Analytics Job Simulation</div>
+        <div class="cert-org">Deloitte Australia via Forage · 2026</div>
+      </div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-icon"><i class="ti ti-briefcase" aria-hidden="true"></i></div>
+      <div>
+        <div class="cert-name">Industry Experience Program</div>
+        <div class="cert-org">Study Australia / Practera · 2026</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<div class="full-card fade-in">
+  <p class="section-label">Core accounting skills</p>
+  <div class="skills-grid" style="margin-top: 10px;">
+    <span class="skill-pill highlight">Accounts Payable / Receivable</span>
+    <span class="skill-pill highlight">Payroll Processing</span>
+    <span class="skill-pill highlight">Cash Reconciliation</span>
+    <span class="skill-pill highlight">GST / BAS</span>
+    <span class="skill-pill highlight">Financial Reporting</span>
+    <span class="skill-pill highlight">Budgeting</span>
+    <span class="skill-pill highlight">Audit Support</span>
+    <span class="skill-pill">HR Administration</span>
+    <span class="skill-pill">Stock & Inventory</span>
+    <span class="skill-pill">Bank Reconciliation</span>
+    <span class="skill-pill">Tax Returns</span>
+    <span class="skill-pill">Month-End Reporting</span>
+    <span class="skill-pill">Internal Controls</span>
+    <span class="skill-pill">Tally ERP 9</span>
+    <span class="skill-pill">SAS</span>
+    <span class="skill-pill">English · Hindi · Malayalam</span>
+  </div>
+</div>
+
+<!-- EDUCATION + REFERENCE -->
+<div class="two-col fade-in">
+  <div class="card">
+    <p class="section-label">Education timeline</p>
+    <div class="timeline" style="margin-top:10px;">
+      <div class="tl-item">
+        <div class="tl-dot active"></div>
+        <div class="tl-year">2023 – 2025</div>
+        <div class="tl-role">Master of Professional Accounting (Advanced)</div>
+        <div class="tl-place">University of Wollongong · Major: Business Analytics</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2016 – 2019</div>
+        <div class="tl-role">Bachelor of Commerce — Finance & Taxation</div>
+        <div class="tl-place">Mahatma Gandhi University · CGPA 8.89 / 10</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="section-label">Reference</p>
+    <div class="ref-chip" style="margin-top:4px;">
+      <div class="ref-avatar">SP</div>
+      <div>
+        <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);">Sujith Purvey</div>
+        <div style="font-size:12px;color:var(--color-text-secondary);">Owner / Manager, Figtree Newsmart</div>
+        <a href="tel:+61449973974" class="ref-link"><i class="ti ti-phone" style="font-size:12px;" aria-hidden="true"></i> +61 449 973 974</a>
+        <a href="mailto:figtreenewsmart@gmail.com" class="ref-link"><i class="ti ti-mail" style="font-size:12px;" aria-hidden="true"></i> figtreenewsmart@gmail.com</a>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--color-text-tertiary);margin-top:12px;border-top:0.5px solid var(--color-border-tertiary);padding-top:10px;">Additional references available on request.</p>
+  </div>
+</div>
+
+<!-- CTA -->
+<div style="text-align:center;margin-top:0.5rem;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;" class="fade-in">
+  <a href="mailto:a7anns@gmail.com?subject=Accounting%20Role%20Opportunity&body=Hi%20Ann%2C%0A%0AI%20came%20across%20your%20profile%20and%20would%20like%20to%20discuss%20an%20opportunity%20with%20you." class="cta-btn">
+    <i class="ti ti-mail" aria-hidden="true"></i> Email Ann
+  </a>
+  <a href="https://linkedin.com/in/ann-mary-poulose" target="_blank" rel="noopener" class="cta-btn" style="background:#0A66C2;">
+    <i class="ti ti-brand-linkedin" aria-hidden="true"></i> Connect on LinkedIn
+  </a>
+  <button class="cta-btn" style="background:#3B6D11;" onclick="sendPrompt('Can you help me write a cover letter for Ann Mary Poulose for an accounting role?')">
+    <i class="ti ti-file-text" aria-hidden="true"></i> Generate cover letter ↗
+  </button>
+</div>
+
+</div>
+
+<script>
+const bars = [
+  { label: 'MYOB', pct: 95, color: '#185FA5' },
+  { label: 'Excel', pct: 90, color: '#3B6D11' },
+  { label: 'Xero', pct: 88, color: '#0F6E56' },
+  { label: 'Tally ERP 9', pct: 75, color: '#533AB7' },
+  { label: 'SAS', pct: 60, color: '#993C1D' },
+];
+const container = document.getElementById('bars');
+bars.forEach(b => {
+  const row = document.createElement('div');
+  row.className = 'bar-row';
+  row.innerHTML = `<span class="bar-label">${b.label}</span><div class="bar-track"><div class="bar-fill" style="width:0%;background:${b.color};" data-pct="${b.pct}"></div></div><span style="font-size:11px;color:var(--color-text-tertiary);width:28px;">${b.pct}%</span>`;
+  container.appendChild(row);
+});
+
+function animateCount(id, target, duration, decimals) {
+  const el = document.getElementById(id);
+  const start = performance.now();
+  function step(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const val = p * target;
+    el.textContent = decimals ? val.toFixed(2) : Math.floor(val) + '+';
+    if (p < 1) requestAnimationFrame(step);
+    else el.textContent = decimals ? target.toFixed(2) : target + '+';
+  }
+  requestAnimationFrame(step);
+}
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      setTimeout(() => {
+        document.querySelectorAll('.bar-fill').forEach(el => {
+          el.style.width = el.dataset.pct + '%';
+        });
+        animateCount('c-exp', 6, 1200, false);
+        animateCount('c-cert', 3, 900, false);
+        animateCount('c-gpa', 8.89, 1400, true);
+        animateCount('c-lang', 3, 900, false);
+      }, 100);
+      observer.disconnect();
+    }
+  });
+}, { threshold: 0.2 });
+observer.observe(document.getElementById('bars'));
+</script>
+
