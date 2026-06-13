@@ -713,25 +713,21 @@
   }
 
   /* ── TRIGGER ON SCROLL ── */
-  let triggered = false;
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting && !triggered) {
-        triggered = true;
-        setTimeout(() => {
-          document.querySelectorAll('.bar-fill').forEach(el => {
-            el.style.width = el.dataset.pct + '%';
-          });
-          animateCount('c-exp',  6,    1200, false);
-          animateCount('c-cert', 3,    900,  false);
-          animateCount('c-gpa',  8.89, 1400, true);
-          animateCount('c-lang', 3,    900,  false);
-        }, 100);
-        observer.disconnect();
-      }
-    });
-  }, { threshold: 0.2 });
-  observer.observe(container);
+function startAnimations() {
+  document.querySelectorAll('.bar-fill').forEach(el => {
+    el.style.width = el.dataset.pct + '%';
+  });
+
+  animateCount('c-exp', 6, 900, false);
+  animateCount('c-cert', 3, 700, false);
+  animateCount('c-gpa', 8.89, 900, true);
+  animateCount('c-lang', 3, 700, false);
+}
+
+/* trigger immediately */
+window.addEventListener('load', () => {
+  startAnimations();
+});
 </script>
 </body>
 </html>
